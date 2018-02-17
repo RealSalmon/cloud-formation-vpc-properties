@@ -1,0 +1,7 @@
+.idea
+*.pyc
+venv
+lambda_function.zip
+.DS_Store
+.coverage
+.pytest_cache

@@ -1,0 +1,66 @@
+---
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "A Lambda-backed custom resource for CloudFormation that provides information about a VPC and its subnets"
+
+Parameters:
+
+  LambdaFunctionName:
+    Description: "The name to use for the Lambda function. This can not be changed."
+    Type: "String"
+    Default: "cloud-formation-resource-vpc-properties"
+
+Resources:
+
+  # IAM role for the Lambda function
+  IamRole:
+    Type: "AWS::IAM::Role"
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service:
+                - "lambda.amazonaws.com"
+            Action:
+              - "sts:AssumeRole"
+      Path: "/"
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+      Policies:
+        - PolicyName: "describe-vpc-resources"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: "Allow"
+                Action:
+                  - "ec2:DescribeVpcs"
+                  - "ec2:DescribeSubnets"
+                Resource: "*"
+
+  # Lambda function to back the custom resource
+  # The code for this function must be managed out of band
+  LambdaFunction:
+    Type: "AWS::Lambda::Function"
+    Properties:
+      FunctionName: !Ref LambdaFunctionName
+      Code:
+        ZipFile: "def lambda_handler(event, context): return 'Hello World!'"
+      Description: "Custom resource for CloudFormation that describes a VPC and its subnets"
+      Handler: "index.lambda_handler"
+      MemorySize: 128
+      Role: !GetAtt ["IamRole", "Arn"]
+      Runtime: "python3.6"
+      Timeout: 10
+      Environment:
+        Variables:
+          LOGLEVEL: "info"
+
+Outputs:
+  LambdaFunctionArn:
+    Description: "The Lambda function's ARN"
+    Value: !GetAtt ["LambdaFunction", "Arn"]
+    Export:
+      Name: !Sub "${AWS::StackName}-FunctionArn"

@@ -1,0 +1,40 @@
+---
+
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: "Test stack for the cloud-formation-vpc-properties custom resource"
+
+Parameters:
+
+  VpcPropertiesStackName:
+    Description: "The CloudFormation stack name containing the cloud-formation-vpc-properties resources"
+    Type: "String"
+    Default: "cloud-formation-resource-vpc-properties"
+
+  VpcId:
+    Type: "AWS::EC2::VPC::Id"
+    Description: "The VPC to use"
+
+Resources:
+
+  VpcProperties:
+    Type: "AWS::CloudFormation::CustomResource"
+    Version: "1.0"
+    Properties:
+      ServiceToken:
+        Fn::ImportValue:
+          !Sub "${VpcPropertiesStackName}-FunctionArn"
+      VpcId: !Ref "VpcId"
+
+Outputs:
+  AvailabilityZones:
+    Description: "List of availability zones found in the VPC"
+    Value: !Join
+      - ", "
+      - !GetAtt ["VpcProperties", "AvailabilityZones"]
+
+  Subnets:
+    Description: "List of subnets found in the VPC"
+    Value: !Join
+      - ", "
+      - !GetAtt ["VpcProperties", "SubnetIds"]
