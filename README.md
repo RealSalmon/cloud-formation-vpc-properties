@@ -19,9 +19,13 @@ This custom resource can be installed on your AWS account by deploying the
 CloudFormation template at cloud-formation/cloud-formation.yml, and then 
 updating the Lambda function it creates with the code from python/index.py
 
-The Lambda function's ARN, which is needed for use as a service token when 
+The Lambda function's ARN, which is needed for use as a service token when
 using this custom resource in your CloudFormation  templates, will be exported
-as an output with the name _${AWS::StackName}-FunctionArn_.
+as an output with the name ```${AWS::StackName}-FunctionArn```. This service
+token will also be stored in
+[Systems Manager Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-paramstore.html)
+at
+```/cloud-formation/service-tokens/vpc-properties```
 
 Once installed, you can test the custom resource by using the CloudFormation
 template at cloud-formation/example-cloud-formation.yml, which will create a 
