@@ -2,14 +2,16 @@
 
 AWSTemplateFormatVersion: "2010-09-09"
 
-Description: "A Lambda-backed custom resource for CloudFormation that provides information about a VPC and its subnets"
+Description: "A custom resource for CloudFormation that provides information about a VPC and its subnets"
 
 Parameters:
 
   LambdaFunctionName:
-    Description: "The name to use for the Lambda function. This can not be changed."
+    Description: "The name to use for the Lambda function. This is optional but can not be changed once set."
     Type: "String"
-    Default: "cloud-formation-resource-vpc-properties"
+
+Conditions:
+  NameFunction: !Not [!Equals [!Ref "LambdaFunctionName", ""]]
 
 Resources:
 
@@ -45,7 +47,7 @@ Resources:
   LambdaFunction:
     Type: "AWS::Lambda::Function"
     Properties:
-      FunctionName: !Ref LambdaFunctionName
+      FunctionName: !If ["NameFunction", !Ref "LambdaFunctionName", !Ref "AWS::NoValue"]
       Code:
         ZipFile: "def lambda_handler(event, context): return 'Hello World!'"
       Description: "Custom resource for CloudFormation that describes a VPC and its subnets"
