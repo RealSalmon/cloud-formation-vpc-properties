@@ -5,7 +5,7 @@ COMPOSE_COMMAND = docker-compose -f docker/docker-compose.yml
 COMPOSE_RUN = ${COMPOSE_COMMAND} run --rm
 PROJECT = $(shell basename $(shell pwd))
 CI_IMAGE_TAG = local/${PROJECT}
-TESTS = /python-testing/bin/pytest --cov-report=term-missing --cov=index tests
+TESTS = pytest --cov-report=term-missing --cov=index tests
 
 environment:
 	${COMPOSE_COMMAND} build

@@ -1,6 +1,6 @@
-# cloud-formation-vpc-properties
+![cloud-formation-vpc-properties](https://github.com/realsalmon/cloud-formation-vpc-properties/actions/workflows/main.yml/badge.svg)
 
-[![CircleCI](https://circleci.com/gh/RealSalmon/cloud-formation-vpc-properties.svg?style=svg)](https://circleci.com/gh/RealSalmon/cloud-formation-vpc-properties)
+# cloud-formation-vpc-properties
 
 ## A Lambda-backed custom resource for CloudFormation
 
