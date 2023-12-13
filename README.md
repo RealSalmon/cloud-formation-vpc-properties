@@ -50,14 +50,12 @@ VpcProperties:
 ##### The ARN of the Lambda function backing the custom resource
 
 Type: String
-
 Required: Yes
 
 #### VpcId
 ##### The ID of the VPC to use
 
 Type: String
-
 Required: Yes
 
 #### Subnet Filters
