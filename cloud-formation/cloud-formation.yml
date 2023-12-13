@@ -10,6 +10,11 @@ Parameters:
     Description: "The name to use for the Lambda function. This is optional but can not be changed once set."
     Type: "String"
 
+  PythonRuntime:
+    Description: "The AWS Lambda [Python] runtime to use"
+    Type: "String"
+    Default: "python3.11"
+
 Conditions:
   NameFunction: !Not [!Equals [!Ref "LambdaFunctionName", ""]]
 
@@ -54,7 +59,7 @@ Resources:
       Handler: "index.lambda_handler"
       MemorySize: 128
       Role: !GetAtt ["IamRole", "Arn"]
-      Runtime: "python3.6"
+      Runtime: !Ref "PythonRuntime"
       Timeout: 10
       Environment:
         Variables:
